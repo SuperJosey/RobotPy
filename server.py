@@ -1,6 +1,7 @@
 import socket
 import RPi.GPIO as GPIO
 import time ## Import 'time' library. Allows us to use 'sleep'
+import command
 
 #-------------------------GPIO_BOARD_CONFIG---------------------------------
 GPIO.setmode(GPIO.BOARD) ## Use board pin numbering
@@ -26,24 +27,8 @@ while 1:
 	data = conn.recv(BUFFER_SIZE)
 	if not data: break
 	print "received data:", data
-	if data == "1111":
-		#Marche Avant
-		GPIO.output(7,True)
-		time.sleep(5)
-		GPIO.output(7,False)
-	elif data == "2222":
-		conn.send(data)
-		#Marche Arriere
-	elif data == "1221":
-		conn.send(data)
-		#Rotation dans un sens
-	elif data == "2112":
-		conn.send(data)
-		#Rotation dans un autre sens
-	else: 
-		conn.send(data)
-		print data;
 	
-	GPIO.cleanup()
+	command.makeMove(data) #analyse the command in the data and make a move
+	
 	conn.send(data) #echo
 conn.close()
