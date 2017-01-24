@@ -1,34 +1,35 @@
 import RPi.GPIO as GPIO
 import time
+import moteurs
 
-def moveForward():
-	#Send forward command to motor
-	test()
+# analyse et effectue une action demande
+# receivedCommand est le code de l'action 
+# vpwm la valeur pour faire varier le pwm
 
-def moveBackward():
-	#Send backward command to motor
-	test()
+def makeMove(receivedCommand,vpwm):
+# au cas ou plusieurs lignes arrivent d'un coup et la seconde commande soit concatenee avec la valeur de pwm
+#	vpwm=int(vpwm)
+#	if vpwm > 1000:
+#		vpwm=vpwm/10000	
 
-def rotateLeft():
-	#Send forward command to motors on the right
-	#Send backward command to motors on the left
-	test()
-
-def rotateRight():
-	#Send forward command to mortors on the left
-	#Send backward command to motors on the right
-	test()
-
-def makeMove(receivedCommand):
-	if(receivedCommand == "1111"):
-		moveForward() 
-	elif(receivedCommand == "2222"):
-		moveBackward()
-	elif(receivedCommand == "1221"):
-		rotateLeft()
-	elif(receivedCommand == "2112"):
-		rotateRight()
+	if receivedCommand == "1111":
+		moteurs.goforward()
+		time.sleep(0.5)
+		moteurs.restAllEngine()
+	elif receivedCommand == "2222" :
+		moteurs.gobackward()
+		time.sleep(0.5)
+		moteurs.restAllEngine()
+	elif receivedCommand == "1221":
+		moteurs.goleft()
+		time.sleep(0.5)
+		moteurs.restAllEngine()
+	elif receivedCommand == "2112":
+		moteurs.goright()
+		time.sleep(0.5)
+		moteurs.restAllEngine()
 	else:
+		moteurs.restAllEngine()
 		return "C_ERR"
 
 
